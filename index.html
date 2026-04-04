@@ -10,72 +10,73 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #f3f3f3, #ffd6e7);
     margin: 0;
-    padding: 20px;
+    padding: 15px;
 }
 
 .container {
     max-width: 420px;
     margin: 0 auto;
     background: #fff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
 h1 {
     text-align: center;
-    color: #444;
+    font-size: 22px;
 }
 
 label {
     font-weight: bold;
-    color: #555;
+    font-size: 14px;
 }
 
 input, select {
     width: 100%;
     padding: 12px;
-    margin: 10px 0 20px;
+    margin: 8px 0 16px;
     border-radius: 10px;
     border: 1px solid #ddd;
-    background: #fafafa;
 }
 
 button {
     width: 100%;
     padding: 15px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #ff7eb3, #ff4d8d);
     color: white;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
 #result {
     margin-top: 20px;
-    padding: 20px;
+    padding: 15px;
+    background: #f8f8f8;
     border-radius: 10px;
-    background: #f9f9f9;
     text-align: center;
-    font-size: 24px;
     display: none;
 }
 
 .tg-btn {
     display: block;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 12px;
     border-radius: 10px;
-    background: #e6e6e6;
+    background: #eee;
     text-decoration: none;
     color: #333;
     font-weight: bold;
-}
-
-.tg-btn:hover {
-    background: #dcdcdc;
 }
 </style>
 </head>
@@ -84,103 +85,149 @@ button {
 
 <div class="container">
 
+<!-- КАРТИНКА -->
+<img src="cat.jpg" alt="tattoo">
+
 <h1>Калькулятор тату 💖</h1>
 
 <label>Размер (см):</label>
-<input type="number" id="size" placeholder="Например: 12">
+<input type="number" id="size">
 
 <label>Стиль:</label>
 <select id="style">
-    <option value="0">Минимализм</option>
-    <option value="1500">Графика</option>
-    <option value="2500">Японская тату</option>
-    <option value="4000">Реализм</option>
-    <option value="4000">Орнаментал</option>
-    <option value="1500">Лайнворк</option>
+<option>Минимализм</option>
+<option>Файнлайн</option>
+<option>Графика</option>
+<option>Гравюра</option>
+<option>Трайбл</option>
+<option>Неотрад</option>
+<option>Япония</option>
+<option>Грейвош</option>
+<option>Орнаментал</option>
 </select>
 
 <label>Место:</label>
 <select id="place">
-    <option value="1000">Плечо / предплечье</option>
-    <option value="0">Бедро / голень</option>
-    <option value="1000">Шея</option>
-    <option value="1000">Пальцы</option>
-    <option value="0">Рёбра</option>
-    <option value="1500">Грудь</option>
+<option value="предплечье">Предплечье</option>
+<option value="плечо">Плечо</option>
+<option value="икра">Икра</option>
+<option value="бедро">Бедро</option>
+<option value="грудь">Грудь</option>
+<option value="лопатки">Лопатки</option>
+<option value="внутренняя_рука">Внутренняя рука</option>
+<option value="бок">Бок</option>
+<option value="шея">Шея</option>
+<option value="кисть">Кисть</option>
+<option value="стопа">Стопа</option>
+<option value="рёбра">Рёбра</option>
+<option value="локоть">Локоть</option>
+<option value="колено">Колено</option>
 </select>
 
-<label>Крупный проект:</label>
-<select id="big" onchange="togglePlace()">
-    <option value="0">Нет</option>
-    <option value="25000">Спина (полностью)</option>
-    <option value="15000">Рукав</option>
-    <option value="7000">Полурукав</option>
-    <option value="25000">Штанина (нога)</option>
-</select>
-
-<label>Тип:</label>
+<label>Цвет:</label>
 <select id="type">
-    <option value="0">Чёрно-белая</option>
-    <option value="2500">Цветная</option>
+<option>ЧБ</option>
+<option>Цвет</option>
 </select>
 
 <button onclick="calculate()">Рассчитать</button>
 
 <div id="result"></div>
 
-<a href="https://t.me/pinchyou" target="_blank" class="tg-btn">
-    Написать мастеру @pinchyou
+<a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
+Написать мастеру @pinchyou
 </a>
 
 </div>
 
 <script>
-function togglePlace() {
-    const big = parseInt(document.getElementById('big').value);
-    const place = document.getElementById('place');
-
-    if (big > 0) {
-        place.disabled = true;
-        place.style.opacity = "0.5";
-    } else {
-        place.disabled = false;
-        place.style.opacity = "1";
-    }
-}
-
 function calculate() {
     const size = parseFloat(document.getElementById('size').value);
+    const style = document.getElementById('style').value;
+    const color = document.getElementById('type').value;
+    const zone = document.getElementById('place').value;
 
     if (!size || size <= 0) {
         alert('Введите размер!');
         return;
     }
 
-    let basePrice = 0;
+    // Крупные проекты
+    if (size > 40) {
+        document.getElementById('result').innerHTML = `
+        💬 Крупный проект — цена обсуждается индивидуально
+        `;
+        document.getElementById('result').style.display = 'block';
 
-    if (size <= 5) basePrice = 1000;
-    else if (size <= 10) basePrice = 3000;
-    else if (size <= 15) basePrice = 4500;
-    else if (size <= 20) basePrice = 6000;
-    else if (size <= 30) basePrice = 8000;
-    else basePrice = 10000;
+        document.getElementById('tgLink').href =
+        "https://t.me/pinchyou?text=" +
+        encodeURIComponent(`Хочу крупную тату (${size} см), стиль ${style}`);
 
-    const style = parseInt(document.getElementById('style').value);
-    const place = parseInt(document.getElementById('place').value);
-    const type = parseInt(document.getElementById('type').value);
-    const big = parseInt(document.getElementById('big').value);
-
-    let finalPrice = basePrice + style + type + big;
-
-    if (big === 0) {
-        finalPrice += place;
+        return;
     }
 
-    document.getElementById('result').innerHTML = `
-        💰 <strong>${finalPrice.toLocaleString('ru-RU')} ₽</strong>
-    `;
+    // база
+    let base = 0;
+    if (size <= 5) base = 1000;
+    else if (size <= 10) base = 2500;
+    else if (size <= 15) base = 4000;
+    else if (size <= 20) base = 5500;
+    else if (size <= 30) base = 7500;
+    else base = 11000;
+
+    // коэффициенты
+    const styleCoeffs = {
+        "Минимализм": 1.0,
+        "Файнлайн": 1.2,
+        "Графика": 1.4,
+        "Гравюра": 1.4,
+        "Трайбл": 1.4,
+        "Неотрад": 1.5,
+        "Япония": 1.7,
+        "Грейвош": 1.8,
+        "Орнаментал": 1.8
+    };
+
+    const colorCoeffs = {
+        "ЧБ": 1.0,
+        "Цвет": 1.25
+    };
+
+    const zoneCoeffs = {
+        "предплечье": 1.0,
+        "плечо": 1.0,
+        "икра": 1.0,
+        "бедро": 1.0,
+        "грудь": 1.1,
+        "лопатки": 1.1,
+        "внутренняя_рука": 1.15,
+        "бок": 1.15,
+        "шея": 1.25,
+        "кисть": 1.25,
+        "стопа": 1.25,
+        "рёбра": 1.25,
+        "локоть": 1.25,
+        "колено": 1.25
+    };
+
+    let price = base *
+        (styleCoeffs[style] || 1) *
+        (colorCoeffs[color] || 1) *
+        (zoneCoeffs[zone] || 1);
+
+    price = Math.round(price / 500) * 500;
+
+    document.getElementById('result').innerHTML =
+        `💰 <strong>${price.toLocaleString('ru-RU')} ₽</strong>`;
 
     document.getElementById('result').style.display = 'block';
+
+    // ссылка в тг с текстом
+    document.getElementById('tgLink').href =
+        "https://t.me/pinchyou?text=" +
+        encodeURIComponent(
+            `Хочу тату ${size}см, стиль ${style}, примерно ${price}₽`
+        );
 }
 </script>
 
