@@ -35,6 +35,8 @@ input, select {
     margin: 8px 0 16px;
     border-radius: 10px;
     border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 button {
@@ -94,7 +96,7 @@ button {
 <h1>Калькулятор тату 💖</h1>
 
 <label>Размер (см):</label>
-<input type="number" id="size" oninput="toggleProject()">
+<input type="number" id="size" min="1" max="1000" step="1" oninput="toggleProject()">
 
 <label>Стиль:</label>
 <select id="style">
@@ -161,7 +163,11 @@ button {
 
 <script>
 function toggleProject() {
-    const size = parseFloat(document.getElementById('size').value);
+    let sizeInput = document.getElementById('size');
+
+    if (sizeInput.value > 1000) sizeInput.value = 1000;
+
+    const size = parseFloat(sizeInput.value);
 
     if (size > 40) {
         document.getElementById('bigProject').style.display = 'block';
