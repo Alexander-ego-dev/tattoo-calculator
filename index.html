@@ -8,33 +8,32 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f3f3f3, #ffd6e7);
     margin: 0;
     padding: 20px;
+    background: linear-gradient(135deg, #f3f3f3, #ffd6e7);
+    position: relative;
+    overflow-x: hidden;
 }
 
-/* ОБЩИЙ БЛОК */
-.wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-}
-
-/* КАРТИНКА */
-.image-block {
-    max-width: 300px;
-}
-
-.image-block img {
-    width: 100%;
-    border-radius: 15px;
+/* 🔥 ФОН С КОТОМ */
+body::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    background: url("cat.jpg") no-repeat center;
+    background-size: cover;
+    opacity: 0.15;
+    z-index: -1;
 }
 
 /* КАЛЬКУЛЯТОР */
 .container {
     max-width: 420px;
-    background: #fff;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.95);
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
@@ -90,14 +89,12 @@ button {
     font-weight: bold;
 }
 
-/* АДАПТИВ */
+/* 📱 АДАПТИВ */
 @media (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-    }
-
-    .image-block {
-        max-width: 100%;
+    body::before {
+        width: 100%;
+        height: 200px;
+        opacity: 0.1;
     }
 }
 </style>
@@ -105,67 +102,57 @@ button {
 
 <body>
 
-<div class="wrapper">
+<div class="container">
 
-    <!-- КОТ -->
-    <div class="image-block">
-        <img src="cat.jpg" alt="tattoo">
-    </div>
+<h1>Калькулятор тату 💖</h1>
 
-    <!-- КАЛЬКУЛЯТОР -->
-    <div class="container">
+<label>Размер (см):</label>
+<input type="number" id="size">
 
-        <h1>Калькулятор тату 💖</h1>
+<label>Стиль:</label>
+<select id="style">
+<option>Минимализм</option>
+<option>Файнлайн</option>
+<option>Графика</option>
+<option>Гравюра</option>
+<option>Трайбл</option>
+<option>Неотрад</option>
+<option>Япония</option>
+<option>Грейвош</option>
+<option>Орнаментал</option>
+</select>
 
-        <label>Размер (см):</label>
-        <input type="number" id="size">
+<label>Место:</label>
+<select id="place">
+<option value="предплечье">Предплечье</option>
+<option value="плечо">Плечо</option>
+<option value="икра">Икра</option>
+<option value="бедро">Бедро</option>
+<option value="грудь">Грудь</option>
+<option value="лопатки">Лопатки</option>
+<option value="внутренняя_рука">Внутренняя рука</option>
+<option value="бок">Бок</option>
+<option value="шея">Шея</option>
+<option value="кисть">Кисть</option>
+<option value="стопа">Стопа</option>
+<option value="рёбра">Рёбра</option>
+<option value="локоть">Локоть</option>
+<option value="колено">Колено</option>
+</select>
 
-        <label>Стиль:</label>
-        <select id="style">
-            <option>Минимализм</option>
-            <option>Файнлайн</option>
-            <option>Графика</option>
-            <option>Гравюра</option>
-            <option>Трайбл</option>
-            <option>Неотрад</option>
-            <option>Япония</option>
-            <option>Грейвош</option>
-            <option>Орнаментал</option>
-        </select>
+<label>Цвет:</label>
+<select id="type">
+<option>ЧБ</option>
+<option>Цвет</option>
+</select>
 
-        <label>Место:</label>
-        <select id="place">
-            <option value="предплечье">Предплечье</option>
-            <option value="плечо">Плечо</option>
-            <option value="икра">Икра</option>
-            <option value="бедро">Бедро</option>
-            <option value="грудь">Грудь</option>
-            <option value="лопатки">Лопатки</option>
-            <option value="внутренняя_рука">Внутренняя рука</option>
-            <option value="бок">Бок</option>
-            <option value="шея">Шея</option>
-            <option value="кисть">Кисть</option>
-            <option value="стопа">Стопа</option>
-            <option value="рёбра">Рёбра</option>
-            <option value="локоть">Локоть</option>
-            <option value="колено">Колено</option>
-        </select>
+<button onclick="calculate()">Рассчитать</button>
 
-        <label>Цвет:</label>
-        <select id="type">
-            <option>ЧБ</option>
-            <option>Цвет</option>
-        </select>
+<div id="result"></div>
 
-        <button onclick="calculate()">Рассчитать</button>
-
-        <div id="result"></div>
-
-        <a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
-            Написать мастеру @pinchyou
-        </a>
-
-    </div>
+<a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
+Написать мастеру @pinchyou
+</a>
 
 </div>
 
