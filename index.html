@@ -13,7 +13,6 @@ body {
     padding: 20px;
 }
 
-/* КАЛЬКУЛЯТОР */
 .container {
     max-width: 420px;
     margin: 0 auto;
@@ -23,9 +22,7 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-h1 {
-    text-align: center;
-}
+h1 { text-align: center; }
 
 label {
     font-weight: bold;
@@ -73,11 +70,11 @@ button {
     font-weight: bold;
 }
 
-/* 📱 АДАПТИВ */
-@media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
+.note {
+    font-size: 12px;
+    margin-top: 10px;
+    color: #666;
+    text-align: center;
 }
 </style>
 </head>
@@ -89,7 +86,7 @@ button {
 <h1>Калькулятор тату 💖</h1>
 
 <label>Размер (см):</label>
-<input type="number" id="size">
+<input type="number" id="size" oninput="toggleProject()">
 
 <label>Стиль:</label>
 <select id="style">
@@ -104,6 +101,14 @@ button {
 <option>Орнаментал</option>
 </select>
 
+<label>Цвет:</label>
+<select id="type">
+<option>ЧБ</option>
+<option>Цвет</option>
+</select>
+
+<!-- ОБЫЧНОЕ МЕСТО -->
+<div id="normalPlace">
 <label>Место:</label>
 <select id="place">
 <option value="предплечье">Предплечье</option>
@@ -111,26 +116,32 @@ button {
 <option value="икра">Икра</option>
 <option value="бедро">Бедро</option>
 <option value="грудь">Грудь</option>
-<option value="лопатки">Лопатки</option>
-<option value="внутренняя_рука">Внутренняя рука</option>
-<option value="бок">Бок</option>
+<option value="рёбра">Рёбра</option>
 <option value="шея">Шея</option>
 <option value="кисть">Кисть</option>
-<option value="стопа">Стопа</option>
-<option value="рёбра">Рёбра</option>
-<option value="локоть">Локоть</option>
-<option value="колено">Колено</option>
 </select>
+</div>
 
-<label>Цвет:</label>
-<select id="type">
-<option>ЧБ</option>
-<option>Цвет</option>
+<!-- КРУПНЫЙ ПРОЕКТ -->
+<div id="bigProject" style="display:none;">
+<label>Крупный проект:</label>
+<select id="project">
+<option value="60000">Рукав</option>
+<option value="45000">Полурукав</option>
+<option value="70000">Нога (полная)</option>
+<option value="40000">Полунога</option>
+<option value="90000">Спина</option>
+<option value="40000">Грудь</option>
 </select>
+</div>
 
 <button onclick="calculate()">Рассчитать</button>
 
 <div id="result"></div>
+
+<div class="note">
+***Расчёт является предварительным. Итоговая стоимость зависит от деталей, расположения и сложности работы.
+</div>
 
 <a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
 Написать мастеру @pinchyou
@@ -139,37 +150,40 @@ button {
 </div>
 
 <script>
+function toggleProject() {
+    const size = parseFloat(document.getElementById('size').value);
+
+    if (size > 40) {
+        document.getElementById('bigProject').style.display = 'block';
+        document.getElementById('normalPlace').style.display = 'none';
+    } else {
+        document.getElementById('bigProject').style.display = 'none';
+        document.getElementById('normalPlace').style.display = 'block';
+    }
+}
+
 function calculate() {
     const size = parseFloat(document.getElementById('size').value);
     const style = document.getElementById('style').value;
     const color = document.getElementById('type').value;
-    const zone = document.getElementById('place').value;
 
     if (!size || size <= 0) {
         alert('Введите размер!');
         return;
     }
 
-    if (size > 40) {
-        document.getElementById('result').innerHTML =
-            "💬 Крупный проект — цена обсуждается индивидуально";
-
-        document.getElementById('result').style.display = 'block';
-
-        document.getElementById('tgLink').href =
-            "https://t.me/pinchyou?text=" +
-            encodeURIComponent(`Хочу крупную тату ${size}см, стиль ${style}`);
-
-        return;
-    }
-
     let base = 0;
-    if (size <= 5) base = 1000;
-    else if (size <= 10) base = 2500;
-    else if (size <= 15) base = 4000;
-    else if (size <= 20) base = 5500;
-    else if (size <= 30) base = 7500;
-    else base = 11000;
+
+    if (size > 40) {
+        base = parseInt(document.getElementById('project').value);
+    } else {
+        if (size <= 5) base = 1000;
+        else if (size <= 10) base = 3000;
+        else if (size <= 15) base = 4500;
+        else if (size <= 20) base = 6000;
+        else if (size <= 30) base = 8000;
+        else base = 10000;
+    }
 
     const styleCoeffs = {
         "Минимализм": 1.0,
@@ -188,27 +202,9 @@ function calculate() {
         "Цвет": 1.25
     };
 
-    const zoneCoeffs = {
-        "предплечье": 1.0,
-        "плечо": 1.0,
-        "икра": 1.0,
-        "бедро": 1.0,
-        "грудь": 1.1,
-        "лопатки": 1.1,
-        "внутренняя_рука": 1.15,
-        "бок": 1.15,
-        "шея": 1.25,
-        "кисть": 1.25,
-        "стопа": 1.25,
-        "рёбра": 1.25,
-        "локоть": 1.25,
-        "колено": 1.25
-    };
-
     let price = base *
         (styleCoeffs[style] || 1) *
-        (colorCoeffs[color] || 1) *
-        (zoneCoeffs[zone] || 1);
+        (colorCoeffs[color] || 1);
 
     price = Math.round(price / 500) * 500;
 
@@ -219,7 +215,7 @@ function calculate() {
 
     document.getElementById('tgLink').href =
         "https://t.me/pinchyou?text=" +
-        encodeURIComponent(`Хочу тату ${size}см, стиль ${style}, примерно ${price}₽`);
+        encodeURIComponent(`Хочу тату, примерно ${price}₽`);
 }
 </script>
 
