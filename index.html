@@ -58,16 +58,24 @@ button {
     display: none;
 }
 
-.tg-btn {
+.tg-btn, .vk-btn {
     display: block;
     text-align: center;
     margin-top: 10px;
     padding: 12px;
     border-radius: 10px;
-    background: #eee;
     text-decoration: none;
-    color: #333;
     font-weight: bold;
+}
+
+.tg-btn {
+    background: #eee;
+    color: #333;
+}
+
+.vk-btn {
+    background: #e7f0ff;
+    color: #2b5dab;
 }
 
 .note {
@@ -107,7 +115,6 @@ button {
 <option>Цвет</option>
 </select>
 
-<!-- ОБЫЧНОЕ МЕСТО -->
 <div id="normalPlace">
 <label>Место:</label>
 <select id="place">
@@ -122,16 +129,15 @@ button {
 </select>
 </div>
 
-<!-- КРУПНЫЙ ПРОЕКТ -->
 <div id="bigProject" style="display:none;">
 <label>Крупный проект:</label>
 <select id="project">
-<option value="60000">Рукав</option>
-<option value="45000">Полурукав</option>
-<option value="70000">Нога (полная)</option>
-<option value="40000">Полунога</option>
-<option value="90000">Спина</option>
-<option value="40000">Грудь</option>
+<option value="45000">Рукав</option>
+<option value="25000">Полурукав</option>
+<option value="50000">Ногав</option>
+<option value="35000">Полуногав</option>
+<option value="57000">Спина</option>
+<option value="24000">Грудь</option>
 </select>
 </div>
 
@@ -145,6 +151,10 @@ button {
 
 <a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
 Написать мастеру @pinchyou
+</a>
+
+<a href="https://vk.ru/pinchyou" target="_blank" class="vk-btn">
+Написать в VK
 </a>
 
 </div>
