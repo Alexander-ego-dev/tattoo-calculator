@@ -73,6 +73,10 @@ button {
     color: #333;
     font-weight: bold;
 }
+
+.tg-btn:hover {
+    background: #dcdcdc;
+}
 </style>
 </head>
 
@@ -106,7 +110,7 @@ button {
 </select>
 
 <label>Крупный проект:</label>
-<select id="big">
+<select id="big" onchange="togglePlace()">
     <option value="0">Нет</option>
     <option value="25000">Спина (полностью)</option>
     <option value="15000">Рукав</option>
@@ -131,6 +135,19 @@ button {
 </div>
 
 <script>
+function togglePlace() {
+    const big = parseInt(document.getElementById('big').value);
+    const place = document.getElementById('place');
+
+    if (big > 0) {
+        place.disabled = true;
+        place.style.opacity = "0.5";
+    } else {
+        place.disabled = false;
+        place.style.opacity = "1";
+    }
+}
+
 function calculate() {
     const size = parseFloat(document.getElementById('size').value);
 
@@ -153,7 +170,11 @@ function calculate() {
     const type = parseInt(document.getElementById('type').value);
     const big = parseInt(document.getElementById('big').value);
 
-    let finalPrice = basePrice + style + place + type + big;
+    let finalPrice = basePrice + style + type + big;
+
+    if (big === 0) {
+        finalPrice += place;
+    }
 
     document.getElementById('result').innerHTML = `
         💰 <strong>${finalPrice.toLocaleString('ru-RU')} ₽</strong>
