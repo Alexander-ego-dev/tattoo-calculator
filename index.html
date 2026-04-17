@@ -1,164 +1,744 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор тату</title>
-
 <style>
+:root {
+    --bg: #090708;
+    --surface: rgba(19, 15, 19, 0.78);
+    --surface-strong: rgba(18, 15, 18, 0.96);
+    --line: rgba(255, 255, 255, 0.08);
+    --line-strong: rgba(255, 150, 183, 0.18);
+    --text: #f8f2f4;
+    --muted: rgba(248, 242, 244, 0.66);
+    --accent: #ff8eb1;
+    --accent-strong: #ff6f9d;
+    --accent-soft: rgba(255, 142, 177, 0.12);
+    --shadow: 0 28px 90px rgba(0, 0, 0, 0.58);
+    --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.30);
+    --radius-xl: 34px;
+    --radius-lg: 24px;
+    --radius-md: 18px;
+    --radius-sm: 14px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f3f3f3, #ffd6e7);
     margin: 0;
-    padding: 20px;
+    min-height: 100dvh;
+    padding:
+        calc(18px + env(safe-area-inset-top))
+        calc(14px + env(safe-area-inset-right))
+        calc(18px + env(safe-area-inset-bottom))
+        calc(14px + env(safe-area-inset-left));
+    color: var(--text);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background:
+        radial-gradient(circle at 14% 12%, rgba(255, 142, 177, 0.12), transparent 16%),
+        radial-gradient(circle at 88% 6%, rgba(255, 142, 177, 0.08), transparent 16%),
+        radial-gradient(circle at 50% 116%, rgba(255, 111, 157, 0.08), transparent 28%),
+        linear-gradient(180deg, #070607 0%, #100d10 56%, #080708 100%);
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+body::before {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 24%),
+        radial-gradient(circle at 12% 24%, rgba(255, 142, 177, 0.08), transparent 16%),
+        radial-gradient(circle at 82% 18%, rgba(255, 142, 177, 0.05), transparent 14%);
+}
+
+body::after {
+    background: linear-gradient(transparent 0, transparent 96%, rgba(255, 255, 255, 0.03) 100%);
+    opacity: 0.9;
 }
 
 .container {
-    max-width: 420px;
+    position: relative;
+    width: min(100%, 760px);
     margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-h1 { text-align: center; }
+.page {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background:
+        linear-gradient(180deg, rgba(23, 19, 23, 0.90), rgba(13, 10, 13, 0.94));
+    box-shadow: var(--shadow);
+}
+
+.page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(255, 142, 177, 0.12), transparent 24%),
+        radial-gradient(circle at 100% 12%, rgba(255, 142, 177, 0.08), transparent 18%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 24%);
+    pointer-events: none;
+}
+
+.hero {
+    position: relative;
+    padding: 34px 24px 22px;
+    min-height: 46vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.hero-orb {
+    position: absolute;
+    right: -6vw;
+    top: -7vw;
+    width: min(48vw, 330px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 142, 177, 0.36);
+    background:
+        radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.10), transparent 34%),
+        radial-gradient(circle at 50% 50%, rgba(255, 142, 177, 0.14), rgba(255, 142, 177, 0.04) 56%, transparent 72%);
+    box-shadow:
+        0 0 0 10px rgba(255, 142, 177, 0.03),
+        0 0 60px rgba(255, 142, 177, 0.10);
+    filter: blur(0.2px);
+    opacity: 0.95;
+}
+
+.hero-spark {
+    position: absolute;
+    right: 18%;
+    top: 18%;
+    width: 74px;
+    height: 74px;
+    transform: rotate(45deg);
+}
+
+.hero-spark::before,
+.hero-spark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(90deg, rgba(255, 142, 177, 0), rgba(255, 142, 177, 1), rgba(255, 142, 177, 0));
+    border-radius: 999px;
+    box-shadow: 0 0 26px rgba(255, 142, 177, 0.18);
+}
+
+.hero-spark::before {
+    width: 74px;
+    height: 2px;
+}
+
+.hero-spark::after {
+    width: 2px;
+    height: 74px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 142, 177, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 142, 177, 0.06);
+    color: #f8c7d6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.eyebrow::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(255, 142, 177, 0.12);
+}
+
+.brand {
+    display: block;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+}
+
+.brand-mark {
+    display: block;
+    font-size: clamp(42px, 10vw, 74px);
+    line-height: 0.9;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    color: #fff6f8;
+    text-shadow:
+        0 0 18px rgba(255, 142, 177, 0.12),
+        0 0 32px rgba(255, 111, 157, 0.08);
+}
+
+.brand-sub {
+    display: block;
+    margin-top: 2px;
+    font-size: clamp(20px, 4.4vw, 30px);
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    color: #ff8eb1;
+}
+
+.hero h1 {
+    margin: 0 0 12px;
+    max-width: 14ch;
+    font-size: clamp(28px, 4.8vw, 44px);
+    line-height: 0.98;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: rgba(248, 242, 244, 0.98);
+}
+
+.hero-copy {
+    margin: 0;
+    max-width: 34ch;
+    color: rgba(248, 242, 244, 0.70);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 142, 177, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 240, 244, 0.78);
+    font-size: 12px;
+    line-height: 1;
+}
+
+.hero-tag::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(255, 142, 177, 0.10);
+}
+
+.body-area {
+    position: relative;
+    padding: 0 24px 24px;
+}
+
+.body-area::before {
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 0 0 18px;
+    background: linear-gradient(90deg, transparent, rgba(255, 142, 177, 0.22), transparent);
+}
+
+.form-card {
+    position: relative;
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(180deg, rgba(22, 18, 22, 0.92), rgba(15, 12, 15, 0.96));
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field:last-of-type {
+    margin-bottom: 0;
+}
 
 label {
-    font-weight: bold;
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    color: rgba(255, 240, 244, 0.92);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
 }
 
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0 16px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-size: 14px;
+.hint {
+    margin: -4px 0 0;
+    color: rgba(247, 240, 242, 0.60);
+    font-size: 12px;
+    line-height: 1.45;
 }
 
-button {
+input,
+select {
     width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ff7eb3, #ff4d8d);
-    color: white;
+    min-height: 48px;
+    padding: 13px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: var(--radius-sm);
+    background:
+        linear-gradient(180deg, rgba(27, 23, 27, 0.96), rgba(16, 13, 16, 0.98));
+    color: var(--text);
+    font: inherit;
     font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+    line-height: 1.2;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+        0 8px 18px rgba(0, 0, 0, 0.18) inset;
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease,
+        filter 180ms ease;
 }
 
-#result {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f8f8f8;
-    border-radius: 10px;
-    text-align: center;
+input::placeholder {
+    color: rgba(247, 240, 242, 0.38);
+}
+
+input:hover,
+select:hover {
+    border-color: rgba(255, 142, 177, 0.24);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: rgba(255, 142, 177, 0.66);
+    box-shadow:
+        0 0 0 4px rgba(255, 142, 177, 0.12),
+        0 0 24px rgba(255, 142, 177, 0.14),
+        0 8px 18px rgba(0, 0, 0, 0.18) inset;
+}
+
+.section {
+    margin-top: 16px;
+}
+
+.section-shell {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+}
+
+#bigProject {
     display: none;
 }
 
-.tg-btn, .vk-btn {
+#bigProject .section-shell {
+    border-color: rgba(255, 142, 177, 0.18);
+    background:
+        linear-gradient(180deg, rgba(255, 142, 177, 0.08), rgba(255, 255, 255, 0.03));
+    box-shadow: 0 0 24px rgba(255, 142, 177, 0.08);
+}
+
+#bigProject .section-shell label::after {
+    content: "от 40 см";
+    margin-left: auto;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255, 142, 177, 0.10);
+    color: #f8c7d6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.primary-btn {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ff93b6 0%, #ff6f9d 50%, #ff4f87 100%);
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    box-shadow:
+        0 18px 32px rgba(255, 79, 135, 0.24),
+        0 0 28px rgba(255, 111, 157, 0.14),
+        0 0 0 1px rgba(255, 255, 255, 0.10) inset;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        filter 180ms ease;
+    touch-action: manipulation;
+}
+
+.primary-btn:hover {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow:
+        0 22px 38px rgba(255, 79, 135, 0.30),
+        0 0 34px rgba(255, 111, 157, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.10) inset;
+}
+
+.primary-btn:active {
+    transform: translateY(1px) scale(0.995);
+    box-shadow:
+        0 14px 24px rgba(255, 79, 135, 0.20),
+        0 0 18px rgba(255, 111, 157, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.primary-btn:focus-visible,
+.contact-btn:focus-visible {
+    outline: 3px solid rgba(255, 142, 177, 0.26);
+    outline-offset: 3px;
+}
+
+#result {
+    display: none;
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 142, 177, 0.18);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
+        radial-gradient(circle at top right, rgba(255, 142, 177, 0.14), transparent 42%);
+    box-shadow:
+        0 20px 42px rgba(0, 0, 0, 0.34),
+        0 0 26px rgba(255, 142, 177, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        opacity 220ms ease,
+        transform 220ms ease;
+}
+
+#result.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.result-head {
+    margin-bottom: 8px;
+    color: rgba(255, 240, 244, 0.74);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.result-price {
     display: block;
-    text-align: center;
+    color: #fff8fb;
+    font-size: clamp(32px, 7vw, 46px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+    text-shadow:
+        0 0 18px rgba(255, 142, 177, 0.12),
+        0 0 28px rgba(255, 111, 157, 0.10);
+}
+
+.result-explainer {
     margin-top: 10px;
-    padding: 12px;
-    border-radius: 10px;
+    color: rgba(247, 240, 242, 0.72);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.result-line {
+    margin-top: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 142, 177, 0.20), transparent);
+}
+
+.result-note {
+    margin-top: 12px;
+    color: rgba(247, 240, 242, 0.66);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.contact-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.contact-prompt {
+    margin: 18px 0 12px;
+    color: rgba(247, 240, 242, 0.70);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.contact-prompt strong {
+    color: #f8c7d6;
+}
+
+.contact-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    color: #fff4f8;
     text-decoration: none;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 700;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease,
+        filter 180ms ease;
+    touch-action: manipulation;
+}
+
+.contact-btn::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    flex: 0 0 auto;
 }
 
 .tg-btn {
-    background: #eee;
-    color: #333;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+        linear-gradient(135deg, rgba(255, 142, 177, 0.18), rgba(255, 142, 177, 0.10));
+    border-color: rgba(255, 142, 177, 0.16);
+    box-shadow:
+        0 16px 30px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 0 26px rgba(255, 142, 177, 0.10);
+}
+
+.tg-btn::before {
+    background: #ff8eb1;
+    box-shadow: 0 0 0 5px rgba(255, 142, 177, 0.14);
 }
 
 .vk-btn {
-    background: #e7f0ff;
-    color: #2b5dab;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+        linear-gradient(135deg, rgba(255, 111, 157, 0.12), rgba(255, 79, 135, 0.08));
+    border-color: rgba(255, 142, 177, 0.12);
+    box-shadow:
+        0 16px 30px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 0 22px rgba(255, 111, 157, 0.08);
 }
 
-.note {
-    font-size: 12px;
-    margin-top: 10px;
-    color: #666;
-    text-align: center;
+.vk-btn::before {
+    background: #ff6f9d;
+    box-shadow: 0 0 0 5px rgba(255, 111, 157, 0.14);
+}
+
+.contact-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+}
+
+.contact-btn:active {
+    transform: translateY(1px);
+}
+
+@media (min-width: 760px) {
+    .hero {
+        padding: 40px 30px 24px;
+    }
+
+    .body-area {
+        padding: 0 30px 30px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .page {
+        border-radius: 28px;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero {
+        min-height: auto;
+        padding: 26px 18px 16px;
+    }
+
+    .body-area {
+        padding: 0 18px 18px;
+    }
+
+    .form-card {
+        padding: 14px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .hero-copy {
+        font-size: 14px;
+    }
+
+    input,
+    select {
+        min-height: 46px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
 </style>
 </head>
-
 <body>
-
 <div class="container">
+    <main class="page">
+        <section class="hero">
+            <div class="hero-orb" aria-hidden="true"></div>
+            <div class="hero-spark" aria-hidden="true"></div>
 
-<h1>Калькулятор тату 💖</h1>
+            <div class="eyebrow">PINCH tattoos</div>
+            <div class="brand">
+                <span class="brand-mark">PINCH</span>
+                <span class="brand-sub">tattoos</span>
+            </div>
+            <h1>Предварительная оценка тату</h1>
+            <div class="hero-tag">От идеи до записи</div>
+        </section>
 
-<label>Размер (см):</label>
-<input type="number" id="size" min="1" max="1000" step="1" oninput="toggleProject()">
+        <section class="body-area">
+            <div class="form-card">
+                <div class="field">
+                    <label for="size">Размер, см</label>
+                    <input type="number" id="size" min="1" max="1000" step="1" inputmode="numeric" oninput="toggleProject()">
+                    <p class="hint">При размере больше 40 см появится крупный проект.</p>
+                </div>
 
-<label>Стиль:</label>
-<select id="style">
-<option>Минимализм</option>
-<option>Файнлайн</option>
-<option>Графика</option>
-<option>Гравюра</option>
-<option>Трайбл</option>
-<option>Неотрад</option>
-<option>Япония</option>
-<option>Грейвош</option>
-<option>Орнаментал</option>
-</select>
+                <div class="field">
+                    <label for="style">Стиль</label>
+                    <select id="style">
+                        <option>Минимализм</option>
+                        <option>Файнлайн</option>
+                        <option>Графика</option>
+                        <option>Гравюра</option>
+                        <option>Трайбл</option>
+                        <option>Неотрад</option>
+                        <option>Япония</option>
+                        <option>Грейвош</option>
+                        <option>Орнаментал</option>
+                    </select>
+                </div>
 
-<label>Цвет:</label>
-<select id="type">
-<option>ЧБ</option>
-<option>Цвет</option>
-</select>
+                <div class="field">
+                    <label for="type">Цвет</label>
+                    <select id="type">
+                        <option>ЧБ</option>
+                        <option>Цвет</option>
+                    </select>
+                </div>
 
-<div id="normalPlace">
-<label>Место:</label>
-<select id="place">
-<option value="предплечье">Предплечье</option>
-<option value="плечо">Плечо</option>
-<option value="икра">Икра</option>
-<option value="бедро">Бедро</option>
-<option value="грудь">Грудь</option>
-<option value="рёбра">Рёбра</option>
-<option value="шея">Шея</option>
-<option value="кисть">Кисть</option>
-</select>
-</div>
+                <div id="normalPlace" class="section">
+                    <div class="section-shell">
+                        <label for="place">Место</label>
+                        <select id="place">
+                            <option value="предплечье">Предплечье</option>
+                            <option value="плечо">Плечо</option>
+                            <option value="икра">Икра</option>
+                            <option value="бедро">Бедро</option>
+                            <option value="грудь">Грудь</option>
+                            <option value="рёбра">Рёбра</option>
+                            <option value="шея">Шея</option>
+                            <option value="кисть">Кисть</option>
+                        </select>
+                    </div>
+                </div>
 
-<div id="bigProject" style="display:none;">
-<label>Крупный проект:</label>
-<select id="project">
-<option value="45000">Рукав</option>
-<option value="25000">Полурукав</option>
-<option value="50000">Ногав</option>
-<option value="35000">Полуногав</option>
-<option value="57000">Спина</option>
-<option value="24000">Грудь</option>
-</select>
-</div>
+                <div id="bigProject" class="section">
+                    <div class="section-shell">
+                        <label for="project">Крупный проект</label>
+                        <select id="project">
+                            <option value="45000">Рукав</option>
+                            <option value="25000">Полурукав</option>
+                            <option value="50000">Ногав</option>
+                            <option value="35000">Полуногав</option>
+                            <option value="57000">Спина</option>
+                            <option value="24000">Грудь</option>
+                        </select>
+                    </div>
+                </div>
 
-<button onclick="calculate()">Рассчитать</button>
+                <button class="primary-btn" onclick="calculate()">Рассчитать стоимость</button>
 
-<div id="result"></div>
+                <div id="result" aria-live="polite"></div>
+            </div>
 
-<div class="note">
-***Расчёт является предварительным. Итоговая стоимость зависит от деталей, расположения и сложности работы.
-</div>
+            <div class="contact-prompt">
+                <strong>Напишите мастеру, чтобы уточнить детали проекта</strong>
+            </div>
 
-<a id="tgLink" href="https://t.me/pinchyou" target="_blank" class="tg-btn">
-Написать мастеру @pinchyou
-</a>
+            <div class="contact-list">
+                <a id="tgLink" href="https://t.me/pinchyou" target="_blank" rel="noopener noreferrer" class="contact-btn tg-btn">
+                    Написать мастеру @pinchyou
+                </a>
 
-<a href="https://vk.ru/pinchyou" target="_blank" class="vk-btn">
-Написать в VK
-</a>
-
+                <a href="https://vk.ru/pinchyou" target="_blank" rel="noopener noreferrer" class="contact-btn vk-btn">
+                    Написать в VK
+                </a>
+            </div>
+        </section>
+    </main>
 </div>
 
 <script>
@@ -224,16 +804,20 @@ function calculate() {
 
     price = Math.round(price / 500) * 500;
 
-    document.getElementById('result').innerHTML =
-        `💰 <strong>${price.toLocaleString('ru-RU')} ₽</strong>`;
+    const result = document.getElementById('result');
+    result.classList.remove('show');
+    result.innerHTML =
+        `<div class="result-head">Предварительная стоимость</div><strong class="result-price">💰 ${price.toLocaleString('ru-RU')} ₽</strong><div class="result-explainer">Цена уже округлена до ближайших 500 ₽.</div><div class="result-line"></div><div class="result-note">Напишите мастеру ниже, чтобы обсудить эскиз и детали.</div>`;
 
-    document.getElementById('result').style.display = 'block';
+    result.style.display = 'block';
+    requestAnimationFrame(() => {
+        result.classList.add('show');
+    });
 
     document.getElementById('tgLink').href =
         "https://t.me/pinchyou?text=" +
         encodeURIComponent(`Хочу тату, примерно ${price}₽`);
 }
 </script>
-
 </body>
 </html>
