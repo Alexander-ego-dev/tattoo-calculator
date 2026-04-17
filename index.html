@@ -128,10 +128,15 @@ body::after {
 .hero-spark {
     position: absolute;
     right: 18%;
-    top: 18%;
-    width: 74px;
-    height: 74px;
-    transform: rotate(45deg);
+    top: 12%;
+    width: 132px;
+    height: 198px;
+    transform: translateZ(0);
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at center, rgba(255, 225, 234, 1) 0 3px, rgba(255, 191, 210, 0.82) 6px, rgba(255, 142, 177, 0.18) 12px, transparent 19px);
+    filter: drop-shadow(0 0 10px rgba(255, 142, 177, 0.10));
 }
 
 .hero-spark::before,
@@ -141,19 +146,50 @@ body::after {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: linear-gradient(90deg, rgba(255, 142, 177, 0), rgba(255, 142, 177, 1), rgba(255, 142, 177, 0));
+    background: linear-gradient(90deg, rgba(255, 142, 177, 0), rgba(255, 220, 230, 0.98) 50%, rgba(255, 142, 177, 0));
     border-radius: 999px;
-    box-shadow: 0 0 26px rgba(255, 142, 177, 0.18);
+    box-shadow: 0 0 14px rgba(255, 142, 177, 0.08);
 }
 
 .hero-spark::before {
-    width: 74px;
+    width: 144px;
     height: 2px;
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scaleY(1.2);
+    mask-image: radial-gradient(circle at center, black 0 72%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0 72%, transparent 100%);
 }
 
 .hero-spark::after {
     width: 2px;
-    height: 74px;
+    height: 184px;
+    opacity: 0.98;
+    transform: translate(-50%, -50%) scaleX(1.25);
+    mask-image: radial-gradient(circle at center, black 0 78%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0 78%, transparent 100%);
+}
+
+.hero-spark::before,
+.hero-spark::after {
+    background:
+        linear-gradient(90deg,
+            rgba(255, 142, 177, 0) 0%,
+            rgba(255, 198, 214, 0.96) 18%,
+            rgba(255, 225, 234, 1) 50%,
+            rgba(255, 198, 214, 0.96) 82%,
+            rgba(255, 142, 177, 0) 100%);
+}
+
+.hero-spark::before {
+    filter:
+        drop-shadow(0 0 8px rgba(255, 142, 177, 0.08))
+        saturate(1.03);
+}
+
+.hero-spark::after {
+    filter:
+        drop-shadow(0 0 8px rgba(255, 142, 177, 0.08))
+        saturate(1.03);
 }
 
 .eyebrow {
@@ -285,6 +321,7 @@ body::after {
     margin-bottom: 0;
 }
 
+.field-label,
 label {
     display: flex;
     align-items: center;
@@ -324,6 +361,182 @@ select {
         box-shadow 180ms ease,
         transform 180ms ease,
         filter 180ms ease;
+}
+
+.native-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.premium-select {
+    position: relative;
+}
+
+.premium-select-trigger {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: var(--radius-sm);
+    background:
+        linear-gradient(180deg, rgba(27, 23, 27, 0.96), rgba(16, 13, 16, 0.98));
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+        0 8px 18px rgba(0, 0, 0, 0.18) inset;
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease,
+        filter 180ms ease,
+        background-color 180ms ease;
+}
+
+.premium-select-trigger:hover {
+    border-color: rgba(255, 142, 177, 0.24);
+}
+
+.premium-select-trigger:focus-visible {
+    outline: none;
+    border-color: rgba(255, 142, 177, 0.66);
+    box-shadow:
+        0 0 0 4px rgba(255, 142, 177, 0.12),
+        0 0 24px rgba(255, 142, 177, 0.14),
+        0 8px 18px rgba(0, 0, 0, 0.18) inset;
+}
+
+.premium-select.is-open .premium-select-trigger {
+    border-color: rgba(255, 142, 177, 0.66);
+    box-shadow:
+        0 0 0 4px rgba(255, 142, 177, 0.12),
+        0 0 24px rgba(255, 142, 177, 0.14),
+        0 8px 18px rgba(0, 0, 0, 0.18) inset;
+}
+
+.premium-select-current {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.premium-select-arrow {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-right: 1.8px solid rgba(255, 240, 244, 0.72);
+    border-bottom: 1.8px solid rgba(255, 240, 244, 0.72);
+    transform: rotate(45deg) translateY(-1px);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        opacity 180ms ease;
+    opacity: 0.9;
+}
+
+.premium-select.is-open .premium-select-arrow {
+    transform: rotate(225deg) translateY(1px);
+    border-color: #ff8eb1;
+}
+
+.premium-select-panel {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    top: calc(100% + 10px);
+    padding: 8px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 142, 177, 0.18);
+    background:
+        linear-gradient(180deg, rgba(24, 20, 24, 0.98), rgba(15, 12, 15, 0.98));
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.38),
+        0 0 28px rgba(255, 142, 177, 0.08);
+    max-height: 0;
+    overflow: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.985);
+    transform-origin: top center;
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        max-height 220ms ease,
+        visibility 0s linear 180ms;
+}
+
+.premium-select.is-open .premium-select-panel {
+    max-height: 280px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        max-height 220ms ease,
+        visibility 0s;
+}
+
+.premium-select-option {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 240, 244, 0.90);
+    text-align: left;
+    padding: 12px 13px;
+    border-radius: 14px;
+    font: inherit;
+    font-size: 15px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+        background-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.premium-select-option:hover,
+.premium-select-option:focus-visible {
+    outline: none;
+    background: rgba(255, 142, 177, 0.10);
+    color: #fff;
+}
+
+.premium-select-option[aria-selected="true"] {
+    background: linear-gradient(135deg, rgba(255, 142, 177, 0.18), rgba(255, 111, 157, 0.08));
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255, 142, 177, 0.14);
+}
+
+.premium-select-panel::-webkit-scrollbar {
+    width: 10px;
+}
+
+.premium-select-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.premium-select-panel::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 3px solid transparent;
+    background-clip: content-box;
 }
 
 input::placeholder {
@@ -368,7 +581,7 @@ select:focus {
     box-shadow: 0 0 24px rgba(255, 142, 177, 0.08);
 }
 
-#bigProject .section-shell label::after {
+#bigProject .section-shell .field-label::after {
     content: "от 40 см";
     margin-left: auto;
     padding: 4px 8px;
@@ -666,8 +879,25 @@ select:focus {
                 </div>
 
                 <div class="field">
-                    <label for="style">Стиль</label>
-                    <select id="style">
+                    <div class="field-label" id="style-label">Стиль</div>
+                    <div class="premium-select" data-select="style">
+                        <button type="button" class="premium-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="style-label style-current">
+                            <span id="style-current" class="premium-select-current">Минимализм</span>
+                            <span class="premium-select-arrow" aria-hidden="true"></span>
+                        </button>
+                        <div class="premium-select-panel" role="listbox" aria-labelledby="style-label">
+                            <button type="button" class="premium-select-option" data-value="Минимализм" aria-selected="true">Минимализм</button>
+                            <button type="button" class="premium-select-option" data-value="Файнлайн" aria-selected="false">Файнлайн</button>
+                            <button type="button" class="premium-select-option" data-value="Графика" aria-selected="false">Графика</button>
+                            <button type="button" class="premium-select-option" data-value="Гравюра" aria-selected="false">Гравюра</button>
+                            <button type="button" class="premium-select-option" data-value="Трайбл" aria-selected="false">Трайбл</button>
+                            <button type="button" class="premium-select-option" data-value="Неотрад" aria-selected="false">Неотрад</button>
+                            <button type="button" class="premium-select-option" data-value="Япония" aria-selected="false">Япония</button>
+                            <button type="button" class="premium-select-option" data-value="Грейвош" aria-selected="false">Грейвош</button>
+                            <button type="button" class="premium-select-option" data-value="Орнаментал" aria-selected="false">Орнаментал</button>
+                        </div>
+                    </div>
+                    <select id="style" class="native-select" tabindex="-1" aria-hidden="true">
                         <option>Минимализм</option>
                         <option>Файнлайн</option>
                         <option>Графика</option>
@@ -681,8 +911,18 @@ select:focus {
                 </div>
 
                 <div class="field">
-                    <label for="type">Цвет</label>
-                    <select id="type">
+                    <div class="field-label" id="type-label">Цвет</div>
+                    <div class="premium-select" data-select="type">
+                        <button type="button" class="premium-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="type-label type-current">
+                            <span id="type-current" class="premium-select-current">ЧБ</span>
+                            <span class="premium-select-arrow" aria-hidden="true"></span>
+                        </button>
+                        <div class="premium-select-panel" role="listbox" aria-labelledby="type-label">
+                            <button type="button" class="premium-select-option" data-value="ЧБ" aria-selected="true">ЧБ</button>
+                            <button type="button" class="premium-select-option" data-value="Цвет" aria-selected="false">Цвет</button>
+                        </div>
+                    </div>
+                    <select id="type" class="native-select" tabindex="-1" aria-hidden="true">
                         <option>ЧБ</option>
                         <option>Цвет</option>
                     </select>
@@ -690,8 +930,24 @@ select:focus {
 
                 <div id="normalPlace" class="section">
                     <div class="section-shell">
-                        <label for="place">Место</label>
-                        <select id="place">
+                        <div class="field-label" id="place-label">Место</div>
+                        <div class="premium-select" data-select="place">
+                            <button type="button" class="premium-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="place-label place-current">
+                                <span id="place-current" class="premium-select-current">Предплечье</span>
+                                <span class="premium-select-arrow" aria-hidden="true"></span>
+                            </button>
+                            <div class="premium-select-panel" role="listbox" aria-labelledby="place-label">
+                                <button type="button" class="premium-select-option" data-value="предплечье" aria-selected="true">Предплечье</button>
+                                <button type="button" class="premium-select-option" data-value="плечо" aria-selected="false">Плечо</button>
+                                <button type="button" class="premium-select-option" data-value="икра" aria-selected="false">Икра</button>
+                                <button type="button" class="premium-select-option" data-value="бедро" aria-selected="false">Бедро</button>
+                                <button type="button" class="premium-select-option" data-value="грудь" aria-selected="false">Грудь</button>
+                                <button type="button" class="premium-select-option" data-value="рёбра" aria-selected="false">Рёбра</button>
+                                <button type="button" class="premium-select-option" data-value="шея" aria-selected="false">Шея</button>
+                                <button type="button" class="premium-select-option" data-value="кисть" aria-selected="false">Кисть</button>
+                            </div>
+                        </div>
+                        <select id="place" class="native-select" tabindex="-1" aria-hidden="true">
                             <option value="предплечье">Предплечье</option>
                             <option value="плечо">Плечо</option>
                             <option value="икра">Икра</option>
@@ -706,8 +962,22 @@ select:focus {
 
                 <div id="bigProject" class="section">
                     <div class="section-shell">
-                        <label for="project">Крупный проект</label>
-                        <select id="project">
+                        <div class="field-label" id="project-label">Крупный проект</div>
+                        <div class="premium-select" data-select="project">
+                            <button type="button" class="premium-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="project-label project-current">
+                                <span id="project-current" class="premium-select-current">Рукав</span>
+                                <span class="premium-select-arrow" aria-hidden="true"></span>
+                            </button>
+                            <div class="premium-select-panel" role="listbox" aria-labelledby="project-label">
+                                <button type="button" class="premium-select-option" data-value="45000" aria-selected="true">Рукав</button>
+                                <button type="button" class="premium-select-option" data-value="25000" aria-selected="false">Полурукав</button>
+                                <button type="button" class="premium-select-option" data-value="50000" aria-selected="false">Ногав</button>
+                                <button type="button" class="premium-select-option" data-value="35000" aria-selected="false">Полуногав</button>
+                                <button type="button" class="premium-select-option" data-value="57000" aria-selected="false">Спина</button>
+                                <button type="button" class="premium-select-option" data-value="24000" aria-selected="false">Грудь</button>
+                            </div>
+                        </div>
+                        <select id="project" class="native-select" tabindex="-1" aria-hidden="true">
                             <option value="45000">Рукав</option>
                             <option value="25000">Полурукав</option>
                             <option value="50000">Ногав</option>
@@ -741,6 +1011,156 @@ select:focus {
 </div>
 
 <script>
+function initPremiumDropdowns() {
+    const dropdowns = Array.from(document.querySelectorAll('.premium-select'));
+
+    function getNativeSelect(dropdown) {
+        const selectId = dropdown?.dataset?.select;
+        return selectId ? document.getElementById(selectId) : null;
+    }
+
+    function closeDropdown(dropdown) {
+        if (!dropdown) return;
+        dropdown.classList.remove('is-open');
+        const trigger = dropdown.querySelector('.premium-select-trigger');
+        const panel = dropdown.querySelector('.premium-select-panel');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (panel) panel.setAttribute('aria-hidden', 'true');
+    }
+
+    function closeAllDropdowns(except) {
+        dropdowns.forEach((dropdown) => {
+            if (dropdown !== except) {
+                closeDropdown(dropdown);
+            }
+        });
+    }
+
+    function syncDropdown(dropdown, value) {
+        const native = getNativeSelect(dropdown);
+        if (!native) return;
+
+        const current = dropdown.querySelector('.premium-select-current');
+        const options = Array.from(native.options);
+        const matched = options.find((option) => option.value === value);
+        const nextValue = matched ? matched.value : value;
+
+        native.value = nextValue;
+        if (current) {
+            current.textContent = matched ? matched.text : nextValue;
+        }
+
+        dropdown.querySelectorAll('.premium-select-option').forEach((button) => {
+            button.setAttribute('aria-selected', button.dataset.value === nextValue ? 'true' : 'false');
+        });
+    }
+
+    dropdowns.forEach((dropdown) => {
+        const native = getNativeSelect(dropdown);
+        const trigger = dropdown.querySelector('.premium-select-trigger');
+        const panel = dropdown.querySelector('.premium-select-panel');
+        const options = Array.from(dropdown.querySelectorAll('.premium-select-option'));
+
+        if (!native || !trigger || !panel) return;
+
+        syncDropdown(dropdown, native.value || (native.options[0] && native.options[0].value));
+
+        trigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            const isOpen = dropdown.classList.contains('is-open');
+            closeAllDropdowns(dropdown);
+
+            if (!isOpen) {
+                dropdown.classList.add('is-open');
+                trigger.setAttribute('aria-expanded', 'true');
+                panel.setAttribute('aria-hidden', 'false');
+                const selected = panel.querySelector('[aria-selected="true"]') || options[0];
+                if (selected) selected.focus({ preventScroll: true });
+            }
+        });
+
+        trigger.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeAllDropdowns();
+                trigger.focus();
+                return;
+            }
+
+            if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
+                event.preventDefault();
+                const isOpen = dropdown.classList.contains('is-open');
+                closeAllDropdowns(dropdown);
+
+                if (!isOpen) {
+                    dropdown.classList.add('is-open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                    panel.setAttribute('aria-hidden', 'false');
+                    const selected = panel.querySelector('[aria-selected="true"]') || options[0];
+                    if (selected) selected.focus({ preventScroll: true });
+                }
+            }
+        });
+
+        panel.addEventListener('click', (event) => {
+            const button = event.target.closest('.premium-select-option');
+            if (!button) return;
+
+            syncDropdown(dropdown, button.dataset.value);
+            closeDropdown(dropdown);
+            trigger.focus({ preventScroll: true });
+        });
+
+        panel.addEventListener('keydown', (event) => {
+            const button = event.target.closest('.premium-select-option');
+            if (!button) return;
+
+            const index = options.indexOf(button);
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                const next = options[Math.min(index + 1, options.length - 1)];
+                if (next) next.focus({ preventScroll: true });
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                const prev = options[Math.max(index - 1, 0)];
+                if (prev) prev.focus({ preventScroll: true });
+            } else if (event.key === 'Home') {
+                event.preventDefault();
+                if (options[0]) options[0].focus({ preventScroll: true });
+            } else if (event.key === 'End') {
+                event.preventDefault();
+                if (options[options.length - 1]) options[options.length - 1].focus({ preventScroll: true });
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                closeAllDropdowns();
+                trigger.focus({ preventScroll: true });
+            }
+        });
+
+        native.addEventListener('change', () => {
+            syncDropdown(dropdown, native.value);
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.premium-select')) {
+            closeAllDropdowns();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeAllDropdowns();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        closeAllDropdowns();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initPremiumDropdowns);
+
 function toggleProject() {
     let sizeInput = document.getElementById('size');
 
@@ -772,12 +1192,12 @@ function calculate() {
     if (size > 40) {
         base = parseInt(document.getElementById('project').value);
     } else {
-        if (size <= 5) base = 1000;
-        else if (size <= 10) base = 3000;
-        else if (size <= 15) base = 4500;
+        if (size <= 5) base = 3000;
+        else if (size <= 10) base = 4000;
+        else if (size <= 15) base = 5000;
         else if (size <= 20) base = 6000;
         else if (size <= 30) base = 8000;
-        else base = 10000;
+        else base = 13000;
     }
 
     const styleCoeffs = {
@@ -801,12 +1221,12 @@ function calculate() {
         (styleCoeffs[style] || 1) *
         (colorCoeffs[color] || 1);
 
-    price = Math.round(price / 500) * 500;
+    price = Math.round(price);
 
     const result = document.getElementById('result');
     result.classList.remove('show');
     result.innerHTML =
-        `<div class="result-head">Предварительная стоимость</div><strong class="result-price">💰 ${price.toLocaleString('ru-RU')} ₽</strong><div class="result-explainer">Цена уже округлена до ближайших 500 ₽.</div><div class="result-line"></div><div class="result-note">Напишите мастеру ниже, чтобы обсудить эскиз и детали.</div>`;
+        `<div class="result-head">Ориентировочная стоимость</div><strong class="result-price">💰 ${price.toLocaleString('ru-RU')} ₽</strong><div class="result-explainer">Финальная цена зависит от деталей проекта.</div><div class="result-line"></div><div class="result-note">Напишите мастеру ниже, чтобы обсудить эскиз и детали.</div>`;
 
     result.style.display = 'block';
     requestAnimationFrame(() => {
